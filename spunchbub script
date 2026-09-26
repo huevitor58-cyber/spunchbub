@@ -1,0 +1,853 @@
+-- SOLARA EXECUTOR - Código completo integrado
+-- GUI + Funcionalidad del ModuleScript
+
+-- Services
+local HttpService = game:GetService("HttpService")
+local Players = game:GetService("Players")
+local MarketplaceService = game:GetService("MarketplaceService")
+
+-- Config
+local GROUP_ID = 845910700
+
+-- Crear ScreenGui
+local ScreenGui_1 = Instance.new("ScreenGui")
+ScreenGui_1.ScreenInsets = Enum.ScreenInsets.DeviceSafeInsets
+ScreenGui_1.DisplayOrder = 999999999
+ScreenGui_1.IgnoreGuiInset = true
+ScreenGui_1.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui_1.ResetOnSpawn = false
+
+-- Main Frame
+local Main_1 = Instance.new("Frame")
+Main_1.Active = true
+Main_1.AnchorPoint = Vector2.new(0.5, 0.5)
+Main_1.BackgroundColor3 = Color3.fromRGB(26, 27, 32)
+Main_1.BorderColor3 = Color3.fromRGB(27, 42, 53)
+Main_1.BorderSizePixel = 1
+Main_1.Name = "Main"
+Main_1.Parent = ScreenGui_1
+Main_1.Position = UDim2.new(0.7208048105239868, 0, 0.4825218617916107, 0)
+Main_1.Size = UDim2.new(0, 471, 0, 310)
+Main_1.Selectable = false
+
+-- UIStroke para Main
+local UIStroke_1 = Instance.new("UIStroke")
+UIStroke_1.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke_1.Color = Color3.fromRGB(97, 97, 97)
+UIStroke_1.Transparency = 0.5
+UIStroke_1.Parent = Main_1
+
+-- Executor Frame
+local Executor_1 = Instance.new("Frame")
+Executor_1.BackgroundTransparency = 1
+Executor_1.BorderColor3 = Color3.fromRGB(27, 42, 53)
+Executor_1.BorderSizePixel = 1
+Executor_1.Name = "Executor"
+Executor_1.Parent = Main_1
+Executor_1.Position = UDim2.new(0.0736842080950737, 0, 0.11290322244167328, 0)
+Executor_1.Size = UDim2.new(0, 440, 0, 275)
+Executor_1.Selectable = false
+
+-- Editor Frame
+local Editor_1 = Instance.new("Frame")
+Editor_1.BackgroundColor3 = Color3.fromRGB(17, 19, 22)
+Editor_1.BorderColor3 = Color3.fromRGB(27, 42, 53)
+Editor_1.BorderSizePixel = 1
+Editor_1.Name = "Editor"
+Editor_1.Parent = Executor_1
+Editor_1.Position = UDim2.new(-0.06525976210832596, 0, 0.029847411438822746, 0)
+Editor_1.Size = UDim2.new(0, 458, 0, 223)
+Editor_1.Selectable = false
+
+-- UIStroke para Editor
+local UIStroke_2 = Instance.new("UIStroke")
+UIStroke_2.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke_2.Color = Color3.fromRGB(97, 97, 97)
+UIStroke_2.Transparency = 0.5
+UIStroke_2.Parent = Editor_1
+
+-- UICorner para Editor
+local UICorner_1 = Instance.new("UICorner")
+UICorner_1.CornerRadius = UDim.new(0, 6)
+UICorner_1.Parent = Editor_1
+
+-- EditorFrame ScrollingFrame
+local EditorFrame_1 = Instance.new("ScrollingFrame")
+EditorFrame_1.Active = false
+EditorFrame_1.BackgroundColor3 = Color3.fromRGB(17, 19, 22)
+EditorFrame_1.BorderColor3 = Color3.fromRGB(62, 62, 62)
+EditorFrame_1.Name = "EditorFrame"
+EditorFrame_1.Parent = Editor_1
+EditorFrame_1.Position = UDim2.new(0.014563147909939289, 0, 0.02272273227572441, 0)
+EditorFrame_1.Size = UDim2.new(0, 448, 0, 217)
+EditorFrame_1.ZIndex = 5
+EditorFrame_1.BottomImage = "rbxassetid://148970562"
+EditorFrame_1.CanvasSize = UDim2.new(0, 0, 0, 0)
+EditorFrame_1.HorizontalScrollBarInset = Enum.ScrollBarInset.ScrollBar
+EditorFrame_1.MidImage = "rbxassetid://148970562"
+EditorFrame_1.ScrollBarImageColor3 = Color3.fromRGB(255, 255, 255)
+EditorFrame_1.ScrollBarThickness = 5
+EditorFrame_1.TopImage = "rbxassetid://148970562"
+
+-- Lines Label
+local Lines_1 = Instance.new("TextLabel")
+Lines_1.BackgroundTransparency = 1
+Lines_1.BorderColor3 = Color3.fromRGB(27, 42, 53)
+Lines_1.BorderSizePixel = 1
+Lines_1.Name = "Lines"
+Lines_1.Parent = EditorFrame_1
+Lines_1.Size = UDim2.new(0, 30, 1, 0)
+Lines_1.ZIndex = 6
+Lines_1.Selectable = false
+Lines_1.FontFace = Font.new("rbxasset://fonts/families/Inconsolata.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+Lines_1.Text = "1"
+Lines_1.TextColor3 = Color3.fromRGB(255, 255, 255)
+Lines_1.TextSize = 15
+Lines_1.TextYAlignment = Enum.TextYAlignment.Top
+
+-- Source TextBox
+local Source_1 = Instance.new("TextBox")
+Source_1.BackgroundTransparency = 1
+Source_1.BorderColor3 = Color3.fromRGB(27, 42, 53)
+Source_1.BorderSizePixel = 1
+Source_1.ClearTextOnFocus = false
+Source_1.CursorPosition = -1
+Source_1.MultiLine = true
+Source_1.Name = "Source"
+Source_1.Parent = EditorFrame_1
+Source_1.Position = UDim2.new(0, 30, 0, 0)
+Source_1.Size = UDim2.new(0.9140400886535645, 0, 1, 0)
+Source_1.ZIndex = 5
+Source_1.FontFace = Font.new("rbxasset://fonts/families/Inconsolata.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+Source_1.PlaceholderColor3 = Color3.fromRGB(204, 204, 204)
+Source_1.PlaceholderText = "-- boi what the helly 67"
+Source_1.Text = ""
+Source_1.TextColor3 = Color3.fromRGB(204, 204, 204)
+Source_1.TextSize = 15
+Source_1.TextXAlignment = Enum.TextXAlignment.Left
+Source_1.TextYAlignment = Enum.TextYAlignment.Top
+
+-- Labels de sintaxis
+local Comments__1 = Instance.new("TextLabel")
+Comments__1.BackgroundTransparency = 1
+Comments__1.BorderColor3 = Color3.fromRGB(27, 42, 53)
+Comments__1.BorderSizePixel = 1
+Comments__1.Name = "Comments_"
+Comments__1.Parent = Source_1
+Comments__1.Size = UDim2.new(1, 0, 1, 0)
+Comments__1.ZIndex = 5
+Comments__1.Selectable = false
+Comments__1.FontFace = Font.new("rbxasset://fonts/families/Inconsolata.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+Comments__1.Text = ""
+Comments__1.TextColor3 = Color3.fromRGB(59, 200, 59)
+Comments__1.TextSize = 15
+Comments__1.TextXAlignment = Enum.TextXAlignment.Left
+Comments__1.TextYAlignment = Enum.TextYAlignment.Top
+
+local Globals__1 = Instance.new("TextLabel")
+Globals__1.BackgroundTransparency = 1
+Globals__1.BorderColor3 = Color3.fromRGB(27, 42, 53)
+Globals__1.BorderSizePixel = 1
+Globals__1.Name = "Globals_"
+Globals__1.Parent = Source_1
+Globals__1.Size = UDim2.new(1, 0, 1, 0)
+Globals__1.ZIndex = 5
+Globals__1.Selectable = false
+Globals__1.FontFace = Font.new("rbxasset://fonts/families/Inconsolata.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+Globals__1.Text = ""
+Globals__1.TextColor3 = Color3.fromRGB(132, 214, 247)
+Globals__1.TextSize = 15
+Globals__1.TextXAlignment = Enum.TextXAlignment.Left
+Globals__1.TextYAlignment = Enum.TextYAlignment.Top
+
+local Keywords__1 = Instance.new("TextLabel")
+Keywords__1.BackgroundTransparency = 1
+Keywords__1.BorderColor3 = Color3.fromRGB(27, 42, 53)
+Keywords__1.BorderSizePixel = 1
+Keywords__1.Name = "Keywords_"
+Keywords__1.Parent = Source_1
+Keywords__1.Size = UDim2.new(1, 0, 1, 0)
+Keywords__1.ZIndex = 5
+Keywords__1.Selectable = false
+Keywords__1.FontFace = Font.new("rbxasset://fonts/families/Inconsolata.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+Keywords__1.Text = ""
+Keywords__1.TextColor3 = Color3.fromRGB(248, 109, 124)
+Keywords__1.TextSize = 15
+Keywords__1.TextXAlignment = Enum.TextXAlignment.Left
+Keywords__1.TextYAlignment = Enum.TextYAlignment.Top
+
+local RemoteHighlight__1 = Instance.new("TextLabel")
+RemoteHighlight__1.BackgroundTransparency = 1
+RemoteHighlight__1.BorderColor3 = Color3.fromRGB(27, 42, 53)
+RemoteHighlight__1.BorderSizePixel = 1
+RemoteHighlight__1.Name = "RemoteHighlight_"
+RemoteHighlight__1.Parent = Source_1
+RemoteHighlight__1.Size = UDim2.new(1, 0, 1, 0)
+RemoteHighlight__1.ZIndex = 5
+RemoteHighlight__1.Selectable = false
+RemoteHighlight__1.FontFace = Font.new("rbxasset://fonts/families/Inconsolata.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+RemoteHighlight__1.Text = ""
+RemoteHighlight__1.TextColor3 = Color3.fromRGB(0, 145, 255)
+RemoteHighlight__1.TextSize = 15
+RemoteHighlight__1.TextXAlignment = Enum.TextXAlignment.Left
+RemoteHighlight__1.TextYAlignment = Enum.TextYAlignment.Top
+
+local Strings__1 = Instance.new("TextLabel")
+Strings__1.BackgroundTransparency = 1
+Strings__1.BorderColor3 = Color3.fromRGB(27, 42, 53)
+Strings__1.BorderSizePixel = 1
+Strings__1.Name = "Strings_"
+Strings__1.Parent = Source_1
+Strings__1.Size = UDim2.new(1, 0, 1, 0)
+Strings__1.ZIndex = 5
+Strings__1.Selectable = false
+Strings__1.FontFace = Font.new("rbxasset://fonts/families/Inconsolata.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+Strings__1.Text = ""
+Strings__1.TextColor3 = Color3.fromRGB(173, 241, 149)
+Strings__1.TextSize = 15
+Strings__1.TextXAlignment = Enum.TextXAlignment.Left
+Strings__1.TextYAlignment = Enum.TextYAlignment.Top
+
+local Tokens__1 = Instance.new("TextLabel")
+Tokens__1.BackgroundTransparency = 1
+Tokens__1.BorderColor3 = Color3.fromRGB(27, 42, 53)
+Tokens__1.BorderSizePixel = 1
+Tokens__1.Name = "Tokens_"
+Tokens__1.Parent = Source_1
+Tokens__1.Size = UDim2.new(1, 0, 1, 0)
+Tokens__1.ZIndex = 5
+Tokens__1.Selectable = false
+Tokens__1.FontFace = Font.new("rbxasset://fonts/families/Inconsolata.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+Tokens__1.Text = ""
+Tokens__1.TextColor3 = Color3.fromRGB(255, 255, 255)
+Tokens__1.TextSize = 15
+Tokens__1.TextXAlignment = Enum.TextXAlignment.Left
+Tokens__1.TextYAlignment = Enum.TextYAlignment.Top
+
+local Numbers__1 = Instance.new("TextLabel")
+Numbers__1.BackgroundTransparency = 1
+Numbers__1.BorderColor3 = Color3.fromRGB(27, 42, 53)
+Numbers__1.BorderSizePixel = 1
+Numbers__1.Name = "Numbers_"
+Numbers__1.Parent = Source_1
+Numbers__1.Size = UDim2.new(1, 0, 1, 0)
+Numbers__1.ZIndex = 4
+Numbers__1.Selectable = false
+Numbers__1.FontFace = Font.new("rbxasset://fonts/families/Inconsolata.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+Numbers__1.Text = ""
+Numbers__1.TextColor3 = Color3.fromRGB(255, 198, 0)
+Numbers__1.TextSize = 15
+Numbers__1.TextXAlignment = Enum.TextXAlignment.Left
+Numbers__1.TextYAlignment = Enum.TextYAlignment.Top
+
+-- Botones
+local ClearButton_1 = Instance.new("TextButton")
+ClearButton_1.AutoButtonColor = false
+ClearButton_1.BackgroundColor3 = Color3.fromRGB(17, 19, 22)
+ClearButton_1.BorderColor3 = Color3.fromRGB(27, 42, 53)
+ClearButton_1.BorderSizePixel = 1
+ClearButton_1.Name = "ClearButton"
+ClearButton_1.Parent = Executor_1
+ClearButton_1.Position = UDim2.new(0.2539241313934326, 0, 0.8637741804122925, 0)
+ClearButton_1.Size = UDim2.new(0, 100, 0, 34)
+ClearButton_1.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+ClearButton_1.Text = "Clear"
+ClearButton_1.TextColor3 = Color3.fromRGB(255, 255, 255)
+ClearButton_1.TextSize = 16
+
+local UICorner_2 = Instance.new("UICorner")
+UICorner_2.CornerRadius = UDim.new(0, 6)
+UICorner_2.Parent = ClearButton_1
+
+local UIStroke_3 = Instance.new("UIStroke")
+UIStroke_3.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke_3.Color = Color3.fromRGB(97, 97, 97)
+UIStroke_3.Transparency = 0.5
+UIStroke_3.Parent = ClearButton_1
+
+local ExecuteButton_1 = Instance.new("TextButton")
+ExecuteButton_1.AutoButtonColor = false
+ExecuteButton_1.BackgroundColor3 = Color3.fromRGB(17, 19, 22)
+ExecuteButton_1.BorderColor3 = Color3.fromRGB(27, 42, 53)
+ExecuteButton_1.BorderSizePixel = 1
+ExecuteButton_1.Name = "ExecuteButton"
+ExecuteButton_1.Parent = Executor_1
+ExecuteButton_1.Position = UDim2.new(-0.06071430444717407, 0, 0.8637741804122925, 0)
+ExecuteButton_1.Size = UDim2.new(0, 130, 0, 33)
+ExecuteButton_1.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+ExecuteButton_1.Text = "Execute"
+ExecuteButton_1.TextColor3 = Color3.fromRGB(255, 255, 255)
+ExecuteButton_1.TextSize = 16
+
+local UICorner_3 = Instance.new("UICorner")
+UICorner_3.CornerRadius = UDim.new(0, 6)
+UICorner_3.Parent = ExecuteButton_1
+
+local UIStroke_4 = Instance.new("UIStroke")
+UIStroke_4.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke_4.Color = Color3.fromRGB(97, 97, 97)
+UIStroke_4.Transparency = 0.5
+UIStroke_4.Parent = ExecuteButton_1
+
+-- Botones adicionales (Hide, R6, RE, Show)
+local HideButton_1 = Instance.new("TextButton")
+HideButton_1.AutoButtonColor = false
+HideButton_1.BackgroundColor3 = Color3.fromRGB(17, 19, 22)
+HideButton_1.BorderColor3 = Color3.fromRGB(27, 42, 53)
+HideButton_1.BorderSizePixel = 1
+HideButton_1.Name = "HideButton"
+HideButton_1.Parent = Executor_1
+HideButton_1.Position = UDim2.new(0.6169725060462952, 0, 0.8601378202438354, 0)
+HideButton_1.Size = UDim2.new(0, 34, 0, 34)
+HideButton_1.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+HideButton_1.Text = "RE"
+HideButton_1.TextColor3 = Color3.fromRGB(255, 255, 255)
+HideButton_1.TextSize = 16
+HideButton_1.TextTransparency = 1
+
+local UICorner_4 = Instance.new("UICorner")
+UICorner_4.CornerRadius = UDim.new(0, 6)
+UICorner_4.Parent = HideButton_1
+
+local UIStroke_5 = Instance.new("UIStroke")
+UIStroke_5.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke_5.Color = Color3.fromRGB(97, 97, 97)
+UIStroke_5.Transparency = 0.5
+UIStroke_5.Parent = HideButton_1
+
+-- ImageLabel para HideButton
+local ImageLabel_1 = Instance.new("ImageLabel")
+ImageLabel_1.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageLabel_1.BackgroundTransparency = 1
+ImageLabel_1.BorderColor3 = Color3.fromRGB(27, 42, 53)
+ImageLabel_1.BorderSizePixel = 1
+ImageLabel_1.Parent = HideButton_1
+ImageLabel_1.Position = UDim2.new(0.5, 0, 0.47058823704719543, 0)
+ImageLabel_1.Size = UDim2.new(0, 25, 0, 25)
+ImageLabel_1.ZIndex = 0
+ImageLabel_1.Image = "rbxassetid://3926307971"
+ImageLabel_1.ImageRectOffset = Vector2.new(84, 44)
+ImageLabel_1.ImageRectSize = Vector2.new(36, 36)
+
+-- R6Button
+local R6Button_1 = Instance.new("TextButton")
+R6Button_1.AutoButtonColor = false
+R6Button_1.BackgroundColor3 = Color3.fromRGB(17, 19, 22)
+R6Button_1.BorderColor3 = Color3.fromRGB(27, 42, 53)
+R6Button_1.BorderSizePixel = 1
+R6Button_1.Name = "R6Button"
+R6Button_1.Parent = Executor_1
+R6Button_1.Position = UDim2.new(0.8957269787788391, 0, 0.8601378202438354, 0)
+R6Button_1.Size = UDim2.new(0, 34, 0, 34)
+R6Button_1.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+R6Button_1.Text = "R6"
+R6Button_1.TextColor3 = Color3.fromRGB(255, 255, 255)
+R6Button_1.TextSize = 16
+R6Button_1.TextTransparency = 1
+
+local UICorner_5 = Instance.new("UICorner")
+UICorner_5.CornerRadius = UDim.new(0, 6)
+UICorner_5.Parent = R6Button_1
+
+local UIStroke_6 = Instance.new("UIStroke")
+UIStroke_6.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke_6.Color = Color3.fromRGB(97, 97, 97)
+UIStroke_6.Transparency = 0.5
+UIStroke_6.Parent = R6Button_1
+
+local ImageLabel_2 = Instance.new("ImageLabel")
+ImageLabel_2.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageLabel_2.BackgroundTransparency = 1
+ImageLabel_2.BorderColor3 = Color3.fromRGB(27, 42, 53)
+ImageLabel_2.BorderSizePixel = 1
+ImageLabel_2.Parent = R6Button_1
+ImageLabel_2.Position = UDim2.new(0.5, 0, 0.5, 0)
+ImageLabel_2.Size = UDim2.new(0, 27, 0, 27)
+ImageLabel_2.ZIndex = 0
+ImageLabel_2.Image = "rbxassetid://4941166750"
+
+-- REButton
+local REButton_1 = Instance.new("TextButton")
+REButton_1.AutoButtonColor = false
+REButton_1.BackgroundColor3 = Color3.fromRGB(17, 19, 22)
+REButton_1.BorderColor3 = Color3.fromRGB(27, 42, 53)
+REButton_1.BorderSizePixel = 1
+REButton_1.Name = "REButton"
+REButton_1.Parent = Executor_1
+REButton_1.Position = UDim2.new(0.8046014904975891, 0, 0.8601378202438354, 0)
+REButton_1.Size = UDim2.new(0, 34, 0, 34)
+REButton_1.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+REButton_1.Text = "RE"
+REButton_1.TextColor3 = Color3.fromRGB(255, 255, 255)
+REButton_1.TextSize = 16
+REButton_1.TextTransparency = 1
+
+local UICorner_6 = Instance.new("UICorner")
+UICorner_6.CornerRadius = UDim.new(0, 6)
+UICorner_6.Parent = REButton_1
+
+local UIStroke_7 = Instance.new("UIStroke")
+UIStroke_7.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke_7.Color = Color3.fromRGB(97, 97, 97)
+UIStroke_7.Transparency = 0.5
+UIStroke_7.Parent = REButton_1
+
+local ImageLabel_3 = Instance.new("ImageLabel")
+ImageLabel_3.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageLabel_3.BackgroundTransparency = 1
+ImageLabel_3.BorderColor3 = Color3.fromRGB(27, 42, 53)
+ImageLabel_3.BorderSizePixel = 1
+ImageLabel_3.Parent = REButton_1
+ImageLabel_3.Position = UDim2.new(0.5, 0, 0.5, 0)
+ImageLabel_3.Size = UDim2.new(0, 22, 0, 22)
+ImageLabel_3.ZIndex = 0
+ImageLabel_3.Image = "rbxassetid://7072721335"
+
+-- ShowButton
+local ShowButton_1 = Instance.new("TextButton")
+ShowButton_1.AutoButtonColor = false
+ShowButton_1.BackgroundColor3 = Color3.fromRGB(17, 19, 22)
+ShowButton_1.BorderColor3 = Color3.fromRGB(27, 42, 53)
+ShowButton_1.BorderSizePixel = 1
+ShowButton_1.Name = "ShowButton"
+ShowButton_1.Parent = Executor_1
+ShowButton_1.Position = UDim2.new(0.6192450523376465, 0, 0.8637741804122925, 0)
+ShowButton_1.Size = UDim2.new(0, 33, 0, 32)
+ShowButton_1.Visible = false
+ShowButton_1.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+ShowButton_1.Text = "RE"
+ShowButton_1.TextColor3 = Color3.fromRGB(255, 255, 255)
+ShowButton_1.TextSize = 16
+ShowButton_1.TextTransparency = 1
+
+local UICorner_7 = Instance.new("UICorner")
+UICorner_7.CornerRadius = UDim.new(0, 6)
+UICorner_7.Parent = ShowButton_1
+
+local UIStroke_8 = Instance.new("UIStroke")
+UIStroke_8.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke_8.Color = Color3.fromRGB(97, 97, 97)
+UIStroke_8.Transparency = 0.5
+UIStroke_8.Parent = ShowButton_1
+
+local ImageLabel_4 = Instance.new("ImageLabel")
+ImageLabel_4.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageLabel_4.BackgroundTransparency = 1
+ImageLabel_4.BorderColor3 = Color3.fromRGB(27, 42, 53)
+ImageLabel_4.BorderSizePixel = 1
+ImageLabel_4.Parent = ShowButton_1
+ImageLabel_4.Position = UDim2.new(0.5, 0, 0.5, 0)
+ImageLabel_4.Size = UDim2.new(0, 25, 0, 25)
+ImageLabel_4.ZIndex = 0
+ImageLabel_4.Image = "rbxassetid://3926307971"
+ImageLabel_4.ImageRectOffset = Vector2.new(564, 44)
+ImageLabel_4.ImageRectSize = Vector2.new(36, 36)
+
+-- Botón Close
+local close_1 = Instance.new("ImageButton")
+close_1.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+close_1.BackgroundTransparency = 1
+close_1.BorderColor3 = Color3.fromRGB(27, 42, 53)
+close_1.BorderSizePixel = 1
+close_1.Name = "close"
+close_1.Parent = Executor_1
+close_1.Position = UDim2.new(0.9116358160972595, 0, -0.10722523182630539, 0)
+close_1.Size = UDim2.new(0, 24, 0, 24)
+close_1.ZIndex = 2
+close_1.Image = "rbxassetid://3926305904"
+close_1.ImageRectOffset = Vector2.new(284, 4)
+close_1.ImageRectSize = Vector2.new(24, 24)
+
+-- Title Bar
+local Title_1 = Instance.new("Frame")
+Title_1.BackgroundColor3 = Color3.fromRGB(25, 26, 31)
+Title_1.BorderColor3 = Color3.fromRGB(27, 42, 53)
+Title_1.BorderSizePixel = 1
+Title_1.Name = "Title"
+Title_1.Parent = Executor_1
+Title_1.Position = UDim2.new(-0.06373734772205353, 0, -0.10545454174280167, 0)
+Title_1.Size = UDim2.new(0, 457, 0, 25)
+Title_1.Selectable = false
+
+local UICorner_8 = Instance.new("UICorner")
+UICorner_8.CornerRadius = UDim.new(0, 6)
+UICorner_8.Parent = Title_1
+
+local UIStroke_9 = Instance.new("UIStroke")
+UIStroke_9.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke_9.Color = Color3.fromRGB(97, 97, 97)
+UIStroke_9.Transparency = 0.5
+UIStroke_9.Parent = Title_1
+
+local Label_1 = Instance.new("TextLabel")
+Label_1.BackgroundColor3 = Color3.fromRGB(26, 27, 32)
+Label_1.BackgroundTransparency = 1
+Label_1.BorderColor3 = Color3.fromRGB(26, 27, 32)
+Label_1.BorderSizePixel = 1
+Label_1.Name = "Label"
+Label_1.Parent = Title_1
+Label_1.Position = UDim2.new(0.1320357322692871, 0, 0.2205224633216858, 0)
+Label_1.Size = UDim2.new(0, 138, 0, 11)
+Label_1.Selectable = false
+Label_1.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Italic)
+Label_1.RichText = true
+Label_1.Text = ' <font color="#f7f30a">Spunchbub</font> - Private Backdoor'
+Label_1.TextColor3 = Color3.fromRGB(255, 255, 255)
+Label_1.TextSize = 18
+
+-- REButton2
+local REButton_2 = Instance.new("TextButton")
+REButton_2.AutoButtonColor = false
+REButton_2.BackgroundColor3 = Color3.fromRGB(17, 19, 22)
+REButton_2.BorderColor3 = Color3.fromRGB(53, 0, 0)
+REButton_2.BorderSizePixel = 1
+REButton_2.Name = "REButton"
+REButton_2.Parent = Executor_1
+REButton_2.Position = UDim2.new(0.7092385292053223, 0, 0.8584957718849182, 0)
+REButton_2.Size = UDim2.new(0, 34, 0, 34)
+REButton_2.FontFace = Font.new("rbxasset://fonts/families/GothamSSm.json", Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+REButton_2.Text = "SCAN"
+REButton_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+REButton_2.TextSize = 16
+REButton_2.TextTransparency = 1
+
+local UICorner_9 = Instance.new("UICorner")
+UICorner_9.CornerRadius = UDim.new(0, 6)
+UICorner_9.Parent = REButton_2
+
+local UIStroke_10 = Instance.new("UIStroke")
+UIStroke_10.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+UIStroke_10.Color = Color3.fromRGB(97, 97, 97)
+UIStroke_10.Transparency = 0.5
+UIStroke_10.Parent = REButton_2
+
+local ImageLabel_5 = Instance.new("ImageLabel")
+ImageLabel_5.AnchorPoint = Vector2.new(0.5, 0.5)
+ImageLabel_5.BackgroundTransparency = 1
+ImageLabel_5.BorderColor3 = Color3.fromRGB(27, 42, 53)
+ImageLabel_5.BorderSizePixel = 1
+ImageLabel_5.Parent = REButton_2
+ImageLabel_5.Position = UDim2.new(0.5, 0, 0.5, 0)
+ImageLabel_5.Size = UDim2.new(0, 22, 0, 22)
+ImageLabel_5.ZIndex = 0
+ImageLabel_5.Image = "rbxassetid://10734933966"
+
+-- Imagen de fondo
+local ImageLabel_6 = Instance.new("ImageLabel")
+ImageLabel_6.BackgroundTransparency = 1
+ImageLabel_6.Parent = Main_1
+ImageLabel_6.Position = UDim2.new(0.20382165908813477, 0, 0.03548387065529823, 0)
+ImageLabel_6.Size = UDim2.new(0, 277, 0, 272)
+ImageLabel_6.Image = "rbxassetid://89640858025803"
+ImageLabel_6.ImageTransparency = 0.6800000071525574
+
+local UICorner_10 = Instance.new("UICorner")
+UICorner_10.CornerRadius = UDim.new(0, 6)
+UICorner_10.Parent = Main_1
+
+-- FUNCIONALIDAD DE LA GUI
+-- Botón Clear
+ClearButton_1.MouseButton1Click:Connect(function()
+    Source_1.Text = ""
+end)
+
+-- Botón Execute
+ExecuteButton_1.MouseButton1Click:Connect(function()
+    warn("Execute deshabilitado: esta versión no ejecuta código arbitrario.")
+end)
+
+-- Botón Hide
+HideButton_1.MouseButton1Click:Connect(function()
+    HideButton_1.Visible = false
+    ShowButton_1.Visible = true
+    
+    Source_1.TextTransparency = 1
+    Comments__1.TextTransparency = 1
+    Globals__1.TextTransparency = 1
+    Keywords__1.TextTransparency = 1
+    Numbers__1.TextTransparency = 1
+    RemoteHighlight__1.TextTransparency = 1
+    Strings__1.TextTransparency = 1
+    Tokens__1.TextTransparency = 1
+end)
+
+-- Botón Show
+ShowButton_1.MouseButton1Click:Connect(function()
+    ShowButton_1.Visible = false
+    HideButton_1.Visible = true
+    
+    Source_1.TextTransparency = 0
+    Comments__1.TextTransparency = 0
+    Globals__1.TextTransparency = 0
+    Keywords__1.TextTransparency = 0
+    Numbers__1.TextTransparency = 0
+    RemoteHighlight__1.TextTransparency = 0
+    Strings__1.TextTransparency = 0
+    Tokens__1.TextTransparency = 0
+end)
+
+-- Botón Close
+close_1.MouseButton1Click:Connect(function()
+    ScreenGui_1:Destroy()
+end)
+
+
+
+
+-- ============================================================
+-- CLAVE
+-- ============================================================
+-- El archivo original no contiene una contraseña/clave.
+-- El único identificador configurado allí es:
+-- GROUP_ID = 845910700
+
+
+-- ============================================================
+-- GUI ARRASTRABLE
+-- ============================================================
+
+do
+    local UserInputService = game:GetService("UserInputService")
+
+    local dragging = false
+    local dragStart
+    local startPos
+
+    Title_1.Active = true
+
+    Title_1.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1
+            or input.UserInputType == Enum.UserInputType.Touch then
+
+            dragging = true
+            dragStart = input.Position
+            startPos = Main_1.Position
+
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
+        end
+    end)
+
+    UserInputService.InputChanged:Connect(function(input)
+        if not dragging then return end
+
+        if input.UserInputType == Enum.UserInputType.MouseMovement
+            or input.UserInputType == Enum.UserInputType.Touch then
+
+            local delta = input.Position - dragStart
+
+            Main_1.Position = UDim2.new(
+                startPos.X.Scale,
+                startPos.X.Offset + delta.X,
+                startPos.Y.Scale,
+                startPos.Y.Offset + delta.Y
+            )
+        end
+    end)
+end
+
+-- ============================================================
+-- SCANNER DE REMOTES (solo detección; no ejecuta payloads)
+-- ============================================================
+
+local function isIgnoredRemote(remote)
+    local fullName = string.lower(remote:GetFullName())
+    local name = string.lower(remote.Name)
+
+    local ignored = {
+        "adonis",
+        "hdadmin",
+        "hd admin",
+        "robloxreplicatedstorage",
+        "defaultchatsystemchatevents",
+        "chatsystem",
+        "textchatservice",
+        "coregui",
+        "playerdata",
+        "playerscripts",
+    }
+
+    for _, keyword in ipairs(ignored) do
+        if string.find(fullName, keyword, 1, true)
+            or string.find(name, keyword, 1, true) then
+            return true
+        end
+    end
+
+    return false
+end
+
+local function scanRemotes()
+    local candidates = {}
+
+    for _, remote in ipairs(game:GetDescendants()) do
+        if remote:IsA("RemoteEvent") or remote:IsA("RemoteFunction") then
+            if not isIgnoredRemote(remote) then
+                table.insert(candidates, remote)
+                print(
+                    "[REMOTE CANDIDATE]",
+                    remote:GetFullName(),
+                    "|",
+                    remote.ClassName
+                )
+            end
+        end
+    end
+
+    if #candidates > 0 then
+        print(" BACKDOOR FOUND :D ")
+        print("Candidatos encontrados:", #candidates)
+    else
+        print("backdoor not found :c")
+    end
+
+    return candidates
+end
+
+-- Usa el botón REButton_2 como botón de escaneo.
+REButton_2.MouseButton1Click:Connect(function()
+    scanRemotes()
+end)
+
+-- ============================================================
+-- R6 LOCAL / OTROS JUGADORES SIGUEN VIENDO AL JUGADOR COMO R15
+-- ============================================================
+
+local function convertLocalCharacterToR6()
+    local player = Players.LocalPlayer
+    local oldCharacter = player.Character
+    if not oldCharacter then return end
+
+    local oldPivot = oldCharacter:GetPivot()
+
+    local ok, err = pcall(function()
+        local description = Players:GetHumanoidDescriptionFromUserId(player.UserId)
+
+        local newCharacter = Players:CreateHumanoidModelFromDescription(
+            description,
+            Enum.HumanoidRigType.R6
+        )
+
+        local humanoid = newCharacter:FindFirstChildOfClass("Humanoid")
+        local root = newCharacter:FindFirstChild("HumanoidRootPart")
+
+        if not humanoid or not root then
+            newCharacter:Destroy()
+            error("No se pudo crear el R6.")
+        end
+
+        newCharacter.Name = oldCharacter.Name
+        newCharacter:PivotTo(oldPivot)
+        newCharacter.Parent = workspace
+
+        player.Character = newCharacter
+
+        humanoid.AutoRotate = true
+        humanoid.PlatformStand = false
+
+        local camera = workspace.CurrentCamera
+        if camera then
+            camera.CameraType = Enum.CameraType.Custom
+            camera.CameraSubject = humanoid
+        end
+
+        -- Animaciones R6 básicas.
+        local animator = humanoid:FindFirstChildOfClass("Animator")
+        if not animator then
+            animator = Instance.new("Animator")
+            animator.Parent = humanoid
+        end
+
+        local animationIds = {
+            idle = "rbxassetid://180435571",
+            walk = "rbxassetid://180426354",
+            jump = "rbxassetid://125750702",
+            fall = "rbxassetid://180436148",
+            climb = "rbxassetid://180436334",
+            sit = "rbxassetid://178130996",
+        }
+
+        local tracks = {}
+
+        local function makeTrack(name, id, looped, priority)
+            local animation = Instance.new("Animation")
+            animation.Name = "LocalR6_" .. name
+            animation.AnimationId = id
+
+            local track = animator:LoadAnimation(animation)
+            track.Looped = looped
+            track.Priority = priority
+            tracks[name] = track
+        end
+
+        makeTrack("idle", animationIds.idle, true, Enum.AnimationPriority.Idle)
+        makeTrack("walk", animationIds.walk, true, Enum.AnimationPriority.Movement)
+        makeTrack("jump", animationIds.jump, false, Enum.AnimationPriority.Action)
+        makeTrack("fall", animationIds.fall, true, Enum.AnimationPriority.Action)
+        makeTrack("climb", animationIds.climb, true, Enum.AnimationPriority.Movement)
+        makeTrack("sit", animationIds.sit, true, Enum.AnimationPriority.Movement)
+
+        local currentTrack
+
+        local function play(track)
+            if currentTrack == track and track.IsPlaying then
+                return
+            end
+
+            if currentTrack then
+                currentTrack:Stop(0.12)
+            end
+
+            currentTrack = track
+            if track then
+                track:Play(0.12)
+            end
+        end
+
+        humanoid.Running:Connect(function(speed)
+            if speed > 0.1 then
+                play(tracks.walk)
+            else
+                play(tracks.idle)
+            end
+        end)
+
+        humanoid.StateChanged:Connect(function(_, state)
+            if state == Enum.HumanoidStateType.Jumping then
+                play(tracks.jump)
+            elseif state == Enum.HumanoidStateType.Freefall then
+                play(tracks.fall)
+            elseif state == Enum.HumanoidStateType.Climbing then
+                play(tracks.climb)
+            elseif state == Enum.HumanoidStateType.Seated then
+                play(tracks.sit)
+            elseif state == Enum.HumanoidStateType.Landed then
+                if humanoid.MoveDirection.Magnitude > 0.1 then
+                    play(tracks.walk)
+                else
+                    play(tracks.idle)
+                end
+            end
+        end)
+
+        play(tracks.idle)
+
+        -- Esta conversión es local: no cambia el rig que el servidor
+        -- replica a los demás jugadores. Por eso ellos siguen viendo R15.
+        if oldCharacter and oldCharacter.Parent then
+            oldCharacter:Destroy()
+        end
+    end)
+
+    if not ok then
+        warn("R6 error:", err)
+    end
+end
+
+R6Button_1.MouseButton1Click:Connect(convertLocalCharacterToR6)
+
+print("Spunchbub GUI cargado correctamente")
+
